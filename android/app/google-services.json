@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "144104431738",
+    "project_id": "agi-production-app",
+    "storage_bucket": "agi-production-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144104431738:android:85fb852ce97df623975bc3",
+        "android_client_info": {
+          "package_name": "com.faizan.agi_productions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9YJM4G1NaH7iRjfJCk9m30UPa9Dl0xnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
