@@ -23,7 +23,7 @@ class AgmProductionsApp extends StatelessWidget {
       title: 'AGI Productions',
       navigatorKey: navigatorKey,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
       ),
       initialRoute: AppRoutes.splash,
       routes: AppRoutes.routes,

@@ -25,11 +25,24 @@ abstract class BaseService {
   }
 
   void _showError(String? message) async {
-    ScaffoldMessenger.of(navigatorKey.currentState!.context).showMaterialBanner(
-      MaterialBanner(
-        content: Text(message ?? 'Something went wrong!'),
-        actions: [],
-      ),
-    );
+    late ScaffoldFeatureController controller;
+    controller = ScaffoldMessenger.of(navigatorKey.currentState!.context)
+        .showMaterialBanner(
+          MaterialBanner(
+            backgroundColor: Colors.red,
+            content: Text(
+              message ?? 'Something went wrong!',
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  controller.close();
+                },
+                child: Text('Dismiss', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        );
   }
 }

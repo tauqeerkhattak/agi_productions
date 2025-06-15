@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:agi_productions/services/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,17 +36,20 @@ class AuthService extends BaseService {
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
+    required VoidCallback onSuccess,
   }) async {
     await performSafeAction(() async {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       log('Signed In Successfully!');
+      onSuccess();
     });
   }
 
   /// Signs out the current user.
-  Future<void> signOut() async {
+  Future<void> signOut({required VoidCallback onSuccess}) async {
     await performSafeAction(() async {
       await _auth.signOut();
+      onSuccess();
     });
   }
 

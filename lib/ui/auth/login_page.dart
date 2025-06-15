@@ -1,6 +1,10 @@
 import 'dart:developer';
 
+import 'package:agi_productions/routes/app_routes.dart';
+import 'package:agi_productions/services/auth_service.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/service_locator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _loading = false;
 
   @override
   void dispose() {
@@ -21,15 +26,25 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
+  Future<void> _login(StateSetter stateSetter) async {
     if (_formKey.currentState!.validate()) {
       // Perform login logic here
       // For now, just log the values
-      log('Email: ${_emailController.text}');
-      log('Password: ${_passwordController.text}');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Successful (Simulated)')),
+      stateSetter(() => _loading = true);
+      final String email = _emailController.text.trim();
+      final String password = _passwordController.text.trim();
+      log('Email: $email');
+      log('Password: $password');
+      await locator<AuthService>().signInWithEmailAndPassword(
+        email: email,
+        password: password,
+        onSuccess: () => Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.home,
+          (_) => false,
+        ),
       );
+      stateSetter(() => _loading = false);
     }
   }
 
@@ -42,7 +57,10 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue.shade200, Colors.blue.shade800],
+          colors: [
+            Theme.of(context).primaryColor.withValues(alpha: 0.2),
+            Theme.of(context).primaryColor.withValues(alpha: 0.8),
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -62,14 +80,14 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    FlutterLogo(size: 80, textColor: Colors.blue.shade700),
+                    FlutterLogo(size: 80),
                     const SizedBox(height: 24.0),
                     Text(
                       'Welcome Back!',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue.shade700,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     const SizedBox(height: 8.0),
@@ -87,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: 'Email Address',
                         prefixIcon: Icon(
                           Icons.email,
-                          color: Colors.blue.shade700,
+                          color: Theme.of(context).primaryColor,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
@@ -111,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: 'Password',
                         prefixIcon: Icon(
                           Icons.lock,
-                          color: Colors.blue.shade700,
+                          color: Theme.of(context).primaryColor,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
@@ -128,28 +146,22 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 32.0),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade700,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 15,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          // Handle forgot password
+                        },
+                        child: Text(
+                          'Don\'t have an account?',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
-                        textStyle: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                      onPressed: _login,
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white),
                       ),
                     ),
+                    const SizedBox(height: 32.0),
+                    _buildButton(),
                     const SizedBox(height: 16.0),
                     TextButton(
                       onPressed: () {
@@ -157,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: Text(
                         'Forgot Password?',
-                        style: TextStyle(color: Colors.blue.shade700),
+                        style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
                     ),
                   ],
@@ -167,6 +179,32 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  StatefulBuilder _buildButton() {
+    return StatefulBuilder(
+      builder: (context, stateSetter) {
+        if (_loading) {
+          return CircularProgressIndicator();
+        }
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            // backgroundColor: Colors.blue.shade700,
+            backgroundColor: Theme.of(context).primaryColor,
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+            textStyle: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ),
+          onPressed: () => _login(stateSetter),
+          child: const Text('Login', style: TextStyle(color: Colors.white)),
+        );
+      },
     );
   }
 }

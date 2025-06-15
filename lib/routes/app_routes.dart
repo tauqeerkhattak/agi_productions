@@ -1,5 +1,8 @@
+import 'package:agi_productions/ui/auth/login_page.dart';
 import 'package:agi_productions/ui/auth/splash_page.dart';
 import 'package:flutter/material.dart';
+
+import '../ui/home/home_page.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -12,7 +15,8 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => SplashPage(),
-    // loginScreen: (context) => LoginScreen(),
+    loginScreen: (context) => LoginPage(),
+    home: (_) => HomePage(),
     // signupScreen: (context) => SignupScreen(),
     // forgotPasswordScreen: (context) => ForgotPasswordScreen(),
     // resetPasswordScreen: (context) => ResetPasswordScreen(),
