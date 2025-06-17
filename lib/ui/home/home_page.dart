@@ -39,6 +39,10 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: const Center(child: Text('Welcome to the Home Page!')),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.newForm),
+      ),
     );
   }
 }

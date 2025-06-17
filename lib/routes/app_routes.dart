@@ -2,6 +2,7 @@ import 'package:agi_productions/ui/auth/login_page.dart';
 import 'package:agi_productions/ui/auth/splash_page.dart';
 import 'package:flutter/material.dart';
 
+import '../ui/form/form_page.dart';
 import '../ui/home/home_page.dart';
 
 class AppRoutes {
@@ -12,11 +13,13 @@ class AppRoutes {
   static const String resetPasswordScreen = '/reset_password_screen';
   static const String emailVerificationScreen = '/email_verification_screen';
   static const String home = '/home';
+  static const String newForm = '/new_form';
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => SplashPage(),
     loginScreen: (context) => LoginPage(),
     home: (_) => HomePage(),
+    newForm: (_) => FormPage(),
     // signupScreen: (context) => SignupScreen(),
     // forgotPasswordScreen: (context) => ForgotPasswordScreen(),
     // resetPasswordScreen: (context) => ResetPasswordScreen(),
